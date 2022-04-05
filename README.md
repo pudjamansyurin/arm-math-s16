@@ -1,4 +1,4 @@
-# STM32F4xx HAL DWT Counter Module
+# ARM DSP Library (SIMD) for Vector Signed Integer (S16)
 
 ## How to use the module
 
