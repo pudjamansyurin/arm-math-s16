@@ -6,7 +6,6 @@
  */
 
 #include "vector.h"
-#include "cmsis_gcc.h"
 
 /**
  * @brief Fills a constant value into a S16 vector.
