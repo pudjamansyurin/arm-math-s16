@@ -463,7 +463,7 @@ void arm_shift_s16(int16_t *pSrc,
 #ifndef  ARM_MATH_BIG_ENDIAN
 
       *__SIMD32(pDst)++ = __PKHBT16((in1 >> -shiftBits),
-                                  (in2 >> -shiftBits));
+              (in2 >> -shiftBits));
 
 #else
 
@@ -478,7 +478,7 @@ void arm_shift_s16(int16_t *pSrc,
 #ifndef  ARM_MATH_BIG_ENDIAN
 
       *__SIMD32(pDst)++ = __PKHBT16((in1 >> -shiftBits),
-                                  (in2 >> -shiftBits));
+              (in2 >> -shiftBits));
 
 #else
 
