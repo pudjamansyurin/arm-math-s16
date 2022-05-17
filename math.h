@@ -39,10 +39,12 @@
 #include "cmsis_gcc.h"
 
 #elif defined	(__riscv_xlen)
-#undef ARM_MATH_DSP
 #include "nds_intrinsic.h"
-//#define __CLZ 			__nds__clz32
-//#define __SSAT			__nds__sclip16
+#define __CLZ             __nds__clz32
+#define __SSAT16(ARG1)    __nds__sclip16((ARG1),16)
+#define __PKHBT16       	__nds__pkbt16
+#define __QADD16          __nds__add16
+#define __QSUB16          __nds__sub16
 
 #else
 #undef ARM_MATH_DSP
@@ -69,8 +71,9 @@ static inline uint8_t __CLZ(uint32_t data) {
 	}
 	return count;
 }
-#endif
+#endif /* __CLZ */
 
+#ifndef __SSAT16
 #ifndef __SSAT
 /**
  \brief   Signed Saturate
@@ -91,6 +94,16 @@ static inline int32_t __SSAT(int32_t val, uint32_t sat) {
 	}
 	return val;
 }
-#endif
+#endif /* __SSAT */
+#define __SSAT16(ARG1)        __SSAT((ARG1), 16)
+#endif /* __SSAT16 */
+
+#ifndef __PKHBT16
+#ifndef __PKHBT
+#define __PKHBT(ARG1,ARG2,ARG3)          ( ((((uint32_t)(ARG1))          ) & 0x0000FFFFUL) |  \
+                                           ((((uint32_t)(ARG2)) << (ARG3)) & 0xFFFF0000UL)  )
+#endif /* __PKHBT */
+#define __PKHBT16(ARG1,ARG2)    __PKHBT((ARG1), (ARG2), 16)
+#endif /* __PKHBT16 */
 
 #endif /* ARM_MATH_S16_MATH_H_ */
