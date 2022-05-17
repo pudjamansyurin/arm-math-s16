@@ -197,7 +197,7 @@ void arm_add_s16(int16_t *pSrcA,
   {
     /* C = A + B */
     /* Add and then store the results in the destination buffer. */
-    *pDst++ = (int16_t) __SSAT16(((int32_t) * pSrcA++ + *pSrcB++));
+    *pDst++ = (int16_t) __SSAT16(((int32_t) * pSrcA++ + *pSrcB++), 16);
 
     /* Decrement the loop counter */
     blkCnt--;
@@ -279,7 +279,7 @@ void arm_sub_s16(int16_t *pSrcA,
   {
     /* C = A - B */
     /* Subtract and then store the result in the destination buffer. */
-    *pDst++ = (int16_t) __SSAT16(((int32_t ) *pSrcA++ - *pSrcB++));
+    *pDst++ = (int16_t) __SSAT16(((int32_t ) *pSrcA++ - *pSrcB++), 16);
 
     /* Decrement the loop counter */
     blkCnt--;
@@ -405,13 +405,13 @@ void arm_shift_s16(int16_t *pSrc,
       /* Shift the inputs and then store the results in the destination buffer. */
 #ifndef  ARM_MATH_BIG_ENDIAN
 
-      *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in1 << shiftBits)),
-                                  __SSAT16((in2 << shiftBits)));
+      *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in1 << shiftBits), 16),
+                                  __SSAT16((in2 << shiftBits), 16));
 
 #else
 
-      *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in2 << shiftBits)),
-                                  __SSAT16((in1 << shiftBits)));
+      *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in2 << shiftBits), 16),
+                                  __SSAT16((in1 << shiftBits), 16));
 
 #endif /* #ifndef  ARM_MATH_BIG_ENDIAN    */
 
@@ -420,13 +420,13 @@ void arm_shift_s16(int16_t *pSrc,
 
 #ifndef  ARM_MATH_BIG_ENDIAN
 
-      *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in1 << shiftBits)),
-                                  __SSAT16((in2 << shiftBits)));
+      *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in1 << shiftBits), 16),
+                                  __SSAT16((in2 << shiftBits), 16));
 
 #else
 
-      *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in2 << shiftBits)),
-                                  __SSAT16((in1 << shiftBits)));
+      *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in2 << shiftBits), 16),
+                                  __SSAT16((in1 << shiftBits), 16));
 
 #endif /* #ifndef  ARM_MATH_BIG_ENDIAN    */
 
@@ -442,7 +442,7 @@ void arm_shift_s16(int16_t *pSrc,
     {
       /* C = A << shiftBits */
       /* Shift and then store the results in the destination buffer. */
-      *pDst++ = __SSAT16((*pSrc++ << shiftBits));
+      *pDst++ = __SSAT16((*pSrc++ << shiftBits), 16);
 
       /* Decrement the loop counter */
       blkCnt--;
@@ -523,7 +523,7 @@ void arm_shift_s16(int16_t *pSrc,
     {
       /* C = A << shiftBits */
       /* Shift and then store the results in the destination buffer. */
-      *pDst++ = __SSAT16(((int32_t) * pSrc++ << shiftBits));
+      *pDst++ = __SSAT16(((int32_t) * pSrc++ << shiftBits), 16);
 
       /* Decrement the loop counter */
       blkCnt--;

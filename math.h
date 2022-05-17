@@ -41,8 +41,8 @@
 #elif defined	(__riscv_xlen)
 #include "nds_intrinsic.h"
 #define __CLZ             __nds__clz32
-#define __SSAT16(ARG1)    __nds__sclip16((ARG1),16)
-#define __PKHBT16       	__nds__pkbt16
+#define __SSAT16          __nds__sclip16
+#define __PKHBT16         __nds__pkbt16
 #define __QADD16          __nds__add16
 #define __QSUB16          __nds__sub16
 
