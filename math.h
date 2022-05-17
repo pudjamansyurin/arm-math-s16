@@ -35,7 +35,7 @@
 #define __SIMD32_CONST(addr)  ((__SIMD32_TYPE *)(addr))
 #define _SIMD32_OFFSET(addr)  (*(__SIMD32_TYPE *)  (addr))
 
-#if defined	(__riscv_xlen)
+#if defined	(__riscv)
 #include "nds_intrinsic.h"
 #define __CLZ                     __nds__clz32
 #define __SSAT16                  __nds__sclip32
