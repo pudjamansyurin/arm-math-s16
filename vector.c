@@ -20,7 +20,7 @@ void arm_fill_s16(int16_t value,
 {
   uint32_t blkCnt; /* loop counter */
 
-#if defined (ARM_MATH_DSP)
+#if defined (USE_MATH_DSP)
 
   /* Run the below code for Cortex-M4 and Cortex-M3 */
 
@@ -56,7 +56,7 @@ void arm_fill_s16(int16_t value,
   /* Loop over blockSize number of values */
   blkCnt = blockSize;
 
-#endif /* #if defined (ARM_MATH_DSP) */
+#endif /* #if defined (USE_MATH_DSP) */
 
   while (blkCnt > 0U)
   {
@@ -82,7 +82,7 @@ void arm_copy_s16(int16_t *pSrc,
 {
   uint32_t blkCnt; /* loop counter */
 
-#if defined (ARM_MATH_DSP)
+#if defined (USE_MATH_DSP)
 
   /* Run the below code for Cortex-M4 and Cortex-M3 */
 
@@ -113,7 +113,7 @@ void arm_copy_s16(int16_t *pSrc,
   /* Loop over blockSize number of values */
   blkCnt = blockSize;
 
-#endif /* #if defined (ARM_MATH_DSP) */
+#endif /* #if defined (USE_MATH_DSP) */
 
   while (blkCnt > 0U)
   {
@@ -147,7 +147,7 @@ void arm_add_s16(int16_t *pSrcA,
 {
   uint32_t blkCnt; /* loop counter */
 
-#if defined (ARM_MATH_DSP)
+#if defined (USE_MATH_DSP)
 
   /* Run the below code for Cortex-M4 and Cortex-M3 */
   int32_t inA1, inA2, inB1, inB2;
@@ -203,7 +203,7 @@ void arm_add_s16(int16_t *pSrcA,
     blkCnt--;
   }
 
-#endif /* #if defined (ARM_MATH_DSP) */
+#endif /* #if defined (USE_MATH_DSP) */
 
 }
 
@@ -227,7 +227,7 @@ void arm_sub_s16(int16_t *pSrcA,
 {
   uint32_t blkCnt; /* loop counter */
 
-#if defined (ARM_MATH_DSP)
+#if defined (USE_MATH_DSP)
 
   /* Run the below code for Cortex-M4 and Cortex-M3 */
   int32_t inA1, inA2;
@@ -285,7 +285,7 @@ void arm_sub_s16(int16_t *pSrcA,
     blkCnt--;
   }
 
-#endif /* #if defined (ARM_MATH_DSP) */
+#endif /* #if defined (USE_MATH_DSP) */
 
 }
 
@@ -308,7 +308,7 @@ void arm_mean_s16(int16_t *pSrc,
   int32_t sum = 0; /* Temporary result storage */
   uint32_t blkCnt; /* loop counter */
 
-#if defined (ARM_MATH_DSP)
+#if defined (USE_MATH_DSP)
   /* Run the below code for Cortex-M4 and Cortex-M3 */
 
   int32_t in;
@@ -342,7 +342,7 @@ void arm_mean_s16(int16_t *pSrc,
   /* Loop over blockSize number of values */
   blkCnt = blockSize;
 
-#endif /* #if defined (ARM_MATH_DSP) */
+#endif /* #if defined (USE_MATH_DSP) */
 
   while (blkCnt > 0U)
   {
@@ -379,7 +379,7 @@ void arm_shift_s16(int16_t *pSrc,
   uint32_t blkCnt; /* loop counter */
   uint8_t sign; /* Sign of shiftBits */
 
-#if defined (ARM_MATH_DSP)
+#if defined (USE_MATH_DSP)
 
   /* Run the below code for Cortex-M4 and Cortex-M3 */
 
@@ -463,7 +463,7 @@ void arm_shift_s16(int16_t *pSrc,
 #ifndef  ARM_MATH_BIG_ENDIAN
 
       *__SIMD32(pDst)++ = __PKHBT16((in1 >> -shiftBits),
-                                  (in2 >> -shiftBits));
+              (in2 >> -shiftBits));
 
 #else
 
@@ -478,7 +478,7 @@ void arm_shift_s16(int16_t *pSrc,
 #ifndef  ARM_MATH_BIG_ENDIAN
 
       *__SIMD32(pDst)++ = __PKHBT16((in1 >> -shiftBits),
-                                  (in2 >> -shiftBits));
+              (in2 >> -shiftBits));
 
 #else
 
@@ -545,7 +545,7 @@ void arm_shift_s16(int16_t *pSrc,
     }
   }
 
-#endif /* #if defined (ARM_MATH_DSP) */
+#endif /* #if defined (USE_MATH_DSP) */
 
 }
 
@@ -567,7 +567,7 @@ void arm_abs_s16(int16_t *pSrc,
 {
   uint32_t blkCnt; /* loop counter */
 
-#if defined (ARM_MATH_DSP)
+#if defined (USE_MATH_DSP)
   __SIMD32_TYPE *simd;
 
   /* Run the below code for Cortex-M4 and Cortex-M3 */
@@ -665,6 +665,6 @@ void arm_abs_s16(int16_t *pSrc,
     blkCnt--;
   }
 
-#endif /* #if defined (ARM_MATH_DSP) */
+#endif /* #if defined (USE_MATH_DSP) */
 
 }

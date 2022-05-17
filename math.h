@@ -35,19 +35,21 @@
 #define __SIMD32_CONST(addr)  ((__SIMD32_TYPE *)(addr))
 #define _SIMD32_OFFSET(addr)  (*(__SIMD32_TYPE *)  (addr))
 
-#if defined	(USE_CMSIS_GCC)
-#include "cmsis_gcc.h"
-
-#elif defined	(__riscv_xlen)
+#if defined	(__riscv_xlen)
 #include "nds_intrinsic.h"
-#define __CLZ             __nds__clz32
-#define __SSAT16          __nds__sclip16
-#define __PKHBT16         __nds__pkbt16
-#define __QADD16          __nds__add16
-#define __QSUB16          __nds__sub16
+#define __CLZ                     __nds__clz32
+#define __SSAT16                  __nds__sclip32
+#define __PKHBT16                 __nds__pkbb16
+#define __QADD16                  __nds__kadd16
+#define __QSUB16                  __nds__ksub16
+#define __SMLAD(ARG1,ARG2,ARG3)   __nds__smalda((ARG3),(ARG1),(ARG2))
 
 #else
-#undef ARM_MATH_DSP
+#include "cmsis_gcc.h"
+#endif
+
+#ifndef __SMLAD
+#undef USE_MATH_DSP
 #endif
 
 #ifndef __CLZ
