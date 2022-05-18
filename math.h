@@ -40,7 +40,7 @@
 #include "nds32_intrinsic.h"
 #define __CLZ                     __nds32__clz
 #define __SSAT16                  __nds32__sclip32
-#define __PKHBT16                 __nds32__pkbb16
+#define __PKHBT16(ARG1,ARG2)      __nds32__pkbb16(ARG2,ARG1)
 #define __QADD16                  __nds32__kadd16
 #define __QSUB16                  __nds32__ksub16
 #define __SMLAD(ARG1,ARG2,ARG3)   __nds32__smalda((ARG3),(ARG1),(ARG2))
@@ -53,13 +53,8 @@
 #define __QSUB16                  __nds__ksub16
 #define __SMLAD(ARG1,ARG2,ARG3)   __nds__smalda((ARG3),(ARG1),(ARG2))
 #endif
-
 #else
 #include "cmsis_gcc.h"
-#endif
-
-#ifndef __SMLAD
-#undef USE_MATH_DSP
 #endif
 
 #ifndef __CLZ
@@ -112,10 +107,10 @@ static inline int32_t __SSAT(int32_t val, uint32_t sat) {
 
 #ifndef __PKHBT16
 #ifndef __PKHBT
-#define __PKHBT(ARG1,ARG2,ARG3)          ( ((((uint32_t)(ARG1))          ) & 0x0000FFFFUL) |  \
-                                           ((((uint32_t)(ARG2)) << (ARG3)) & 0xFFFF0000UL)  )
+#define __PKHBT(ARG1,ARG2,ARG3)    ( ((((uint32_t)(ARG1))          ) & 0x0000FFFFUL) |  \
+                                     ((((uint32_t)(ARG2)) << (ARG3)) & 0xFFFF0000UL)  )
 #endif /* __PKHBT */
-#define __PKHBT16(ARG1,ARG2)    __PKHBT((ARG1), (ARG2), 16)
+#define __PKHBT16(ARG1,ARG2)       __PKHBT((ARG1), (ARG2), 16)
 #endif /* __PKHBT16 */
 
 #endif /* ARM_MATH_S16_MATH_H_ */
