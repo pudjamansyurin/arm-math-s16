@@ -35,7 +35,8 @@
 #define __SIMD32_CONST(addr)  ((__SIMD32_TYPE *)(addr))
 #define _SIMD32_OFFSET(addr)  (*(__SIMD32_TYPE *)  (addr))
 
-#if defined	(__NDS32__)
+#if defined	(__NDS32__) || defined(__riscv)
+#ifdef __NDS32__
 #include "nds32_intrinsic.h"
 #define __CLZ                     __nds32__clz
 #define __SSAT16                  __nds32__sclip32
@@ -43,6 +44,15 @@
 #define __QADD16                  __nds32__kadd16
 #define __QSUB16                  __nds32__ksub16
 #define __SMLAD(ARG1,ARG2,ARG3)   __nds32__smalda((ARG3),(ARG1),(ARG2))
+#else
+#include "nds_intrinsic.h"
+#define __CLZ                     __nds__clz32
+#define __SSAT16                  __nds__sclip32
+#define __PKHBT16(ARG1,ARG2)      __nds__pkbb16(ARG2,ARG1)
+#define __QADD16                  __nds__kadd16
+#define __QSUB16                  __nds__ksub16
+#define __SMLAD(ARG1,ARG2,ARG3)   __nds__smalda((ARG3),(ARG1),(ARG2))
+#endif
 
 #else
 #include "cmsis_gcc.h"
