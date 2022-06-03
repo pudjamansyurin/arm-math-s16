@@ -18,7 +18,7 @@
 #elif defined ( __ARMCC_VERSION ) && ( __ARMCC_VERSION >= 6010050 )
 	#define __SIMD32_TYPE int32_t
 #elif defined ( __GNUC__ )
-	#define __SIMD32_TYPE int32_t
+#define __SIMD32_TYPE int32_t
 #elif defined ( __ICCARM__ )
 	#define __SIMD32_TYPE int32_t __packed
 #elif defined ( __TI_ARM__ )
@@ -32,8 +32,8 @@
 #endif
 
 #define __SIMD32(addr)        (*(__SIMD32_TYPE **) & (addr))
-#define __SIMD32_CONST(addr)  ((__SIMD32_TYPE *)(addr))
-#define _SIMD32_OFFSET(addr)  (*(__SIMD32_TYPE *)  (addr))
+#define __SIMD32_CONST(addr)  ((__SIMD32_TYPE *) (addr))
+#define __SIMD32_OFFSET(addr)  (*(__SIMD32_TYPE *) (addr))
 
 #if defined	(__nds32__) ||  defined (__nds_v5)
 	#include "nds32_intrinsic.h"
@@ -44,7 +44,7 @@
 	#define __QSUB16                  __nds32__ksub16
 	#define __SMLAD(ARG1,ARG2,ARG3)   __nds32__smalda((ARG3),(ARG1),(ARG2))
 #else
-	#include "cmsis_gcc.h"
+#include "cmsis_gcc.h"
 #endif
 
 #ifndef __CLZ
@@ -96,11 +96,11 @@
 #endif /* __SSAT16 */
 
 #ifndef __PKHBT16
-	#ifndef __PKHBT
+#ifndef __PKHBT
 	#define __PKHBT(ARG1,ARG2,ARG3)    ( ((((uint32_t)(ARG1))          ) & 0x0000FFFFUL) |  \
 										 ((((uint32_t)(ARG2)) << (ARG3)) & 0xFFFF0000UL)  )
 	#endif /* __PKHBT */
-	#define __PKHBT16(ARG1,ARG2)       __PKHBT((ARG1), (ARG2), 16)
+#define __PKHBT16(ARG1,ARG2)       __PKHBT((ARG1), (ARG2), 16)
 #endif /* __PKHBT16 */
 
 #endif /* ARM_MATH_S16_MATH_H_ */
