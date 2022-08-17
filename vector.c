@@ -14,53 +14,59 @@
  * @param[in]       blockSize length of the output vector
  * @return none.
  */
-void arm_fill_s16(int16_t value, int16_t *pDst, uint32_t blockSize) {
-	uint32_t blkCnt; /* loop counter */
+void simd_fill_s16(int16_t value,
+    int16_t *pDst,
+    uint32_t blockSize)
+{
+    uint32_t blkCnt; /* loop counter */
 
 #if defined (USE_MATH_DSP)
 
-	/* Run the below code for Cortex-M4 and Cortex-M3 */
-	int32_t packedValue; /* value packed to 32 bits */
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-	/*loop Unrolling */
-	blkCnt = blockSize >> 2U;
+    int32_t packedValue; /* value packed to 32 bits */
 
-	/* Packing two 16 bit values to 32 bit value in order to use SIMD */
-	packedValue = __PKHBT16(value, value);
+    /*loop Unrolling */
+    blkCnt = blockSize >> 2U;
 
-	/* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
-	 ** a second loop below computes the remaining 1 to 3 samples. */
-	while (blkCnt > 0U) {
-		/* C = value */
-		/* Fill the value in the destination buffer */
-		*__SIMD32(pDst)++ = packedValue;
-		*__SIMD32(pDst)++ = packedValue;
+    /* Packing two 16 bit values to 32 bit value in order to use SIMD */
+    packedValue = __PKHBT16(value, value);
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+     ** a second loop below computes the remaining 1 to 3 samples. */
+    while (blkCnt > 0U)
+    {
+        /* C = value */
+        /* Fill the value in the destination buffer */
+        *__SIMD32(pDst)++ = packedValue;
+        *__SIMD32(pDst)++ = packedValue;
 
-	/* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-	 ** No loop unrolling is used. */
-	blkCnt = blockSize % 0x4U;
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
+
+    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+     ** No loop unrolling is used. */
+    blkCnt = blockSize % 0x4U;
 
 #else
 
-  /* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-  /* Loop over blockSize number of values */
-  blkCnt = blockSize;
+    /* Loop over blockSize number of values */
+    blkCnt = blockSize;
 
 #endif /* #if defined (USE_MATH_DSP) */
 
-	while (blkCnt > 0U) {
-		/* C = value */
-		/* Fill the value in the destination buffer */
-		*pDst++ = value;
+    while (blkCnt > 0U)
+    {
+        /* C = value */
+        /* Fill the value in the destination buffer */
+        *pDst++ = value;
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 }
 
 /**
@@ -70,49 +76,54 @@ void arm_fill_s16(int16_t value, int16_t *pDst, uint32_t blockSize) {
  * @param[in]       blockSize length of the input vector
  * @return none.
  */
-void arm_copy_s16(int16_t *pSrc, int16_t *pDst, uint32_t blockSize) {
-	uint32_t blkCnt; /* loop counter */
+void simd_copy_s16(int16_t *pSrc,
+    int16_t *pDst,
+    uint32_t blockSize)
+{
+    uint32_t blkCnt; /* loop counter */
 
 #if defined (USE_MATH_DSP)
 
-	/* Run the below code for Cortex-M4 and Cortex-M3 */
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-	/*loop Unrolling */
-	blkCnt = blockSize >> 2U;
+    /*loop Unrolling */
+    blkCnt = blockSize >> 2U;
 
-	/* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
-	 ** a second loop below computes the remaining 1 to 3 samples. */
-	while (blkCnt > 0U) {
-		/* C = A */
-		/* Read two inputs */
-		*__SIMD32(pDst)++ = *__SIMD32(pSrc)++;
-		*__SIMD32(pDst)++ = *__SIMD32(pSrc)++;
+    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+     ** a second loop below computes the remaining 1 to 3 samples. */
+    while (blkCnt > 0U)
+    {
+        /* C = A */
+        /* Read two inputs */
+        *__SIMD32(pDst)++ = *__SIMD32(pSrc)++;
+        *__SIMD32(pDst)++ = *__SIMD32(pSrc)++;
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
-	/* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-	 ** No loop unrolling is used. */
-	blkCnt = blockSize % 0x4U;
+    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+     ** No loop unrolling is used. */
+    blkCnt = blockSize % 0x4U;
 
 #else
 
-  /* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-  /* Loop over blockSize number of values */
-  blkCnt = blockSize;
+    /* Loop over blockSize number of values */
+    blkCnt = blockSize;
 
 #endif /* #if defined (USE_MATH_DSP) */
 
-	while (blkCnt > 0U) {
-		/* C = A */
-		/* Copy and then store the value in the destination buffer */
-		*pDst++ = *pSrc++;
+    while (blkCnt > 0U)
+    {
+        /* C = A */
+        /* Copy and then store the value in the destination buffer */
+        *pDst++ = *pSrc++;
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 }
 
 /**
@@ -129,62 +140,71 @@ void arm_copy_s16(int16_t *pSrc, int16_t *pDst, uint32_t blockSize) {
  * Results outside of the allowable S16 range will be saturated.
  */
 
-void arm_add_s16(int16_t *pSrcA, int16_t *pSrcB, int16_t *pDst, uint32_t blockSize) {
-	uint32_t blkCnt; /* loop counter */
+void simd_add_s16(int16_t *pSrcA,
+    int16_t *pSrcB,
+    int16_t *pDst,
+    uint32_t blockSize)
+{
+    uint32_t blkCnt; /* loop counter */
 
 #if defined (USE_MATH_DSP)
 
-	/* Run the below code for Cortex-M4 and Cortex-M3 */
-	int32_t inA1, inA2, inB1, inB2;
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
+    int32_t inA1;
+    int32_t inA2;
+    int32_t inB1;
+    int32_t inB2;
 
-	/*loop Unrolling */
-	blkCnt = blockSize >> 2U;
+    /*loop Unrolling */
+    blkCnt = blockSize >> 2U;
 
-	/* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
-	 ** a second loop below computes the remaining 1 to 3 samples. */
-	while (blkCnt > 0U) {
-		/* C = A + B */
-		/* Add and then store the results in the destination buffer. */
-		inA1 = *__SIMD32(pSrcA)++;
-		inA2 = *__SIMD32(pSrcA)++;
-		inB1 = *__SIMD32(pSrcB)++;
-		inB2 = *__SIMD32(pSrcB)++;
+    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+     ** a second loop below computes the remaining 1 to 3 samples. */
+    while (blkCnt > 0U)
+    {
+        /* C = A + B */
+        /* Add and then store the results in the destination buffer. */
+        inA1 = *__SIMD32(pSrcA)++;
+        inA2 = *__SIMD32(pSrcA)++;
+        inB1 = *__SIMD32(pSrcB)++;
+        inB2 = *__SIMD32(pSrcB)++;
 
-		*__SIMD32(pDst)++ = __QADD16(inA1, inB1);
-		*__SIMD32(pDst)++ = __QADD16(inA2, inB2);
+        *__SIMD32(pDst)++ = __QADD16(inA1, inB1);
+        *__SIMD32(pDst)++ = __QADD16(inA2, inB2);
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
-	/* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-	 ** No loop unrolling is used. */
-	blkCnt = blockSize % 0x4U;
+    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+     ** No loop unrolling is used. */
+    blkCnt = blockSize % 0x4U;
 
-	while (blkCnt > 0U) {
-		/* C = A + B */
-		/* Add and then store the results in the destination buffer. */
-		*pDst++ = (int16_t) __QADD16(*pSrcA++, *pSrcB++);
+    while (blkCnt > 0U)
+    {
+        /* C = A + B */
+        /* Add and then store the results in the destination buffer. */
+        *pDst++ = (int16_t) __QADD16(*pSrcA++, *pSrcB++);
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
 #else
-  /* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = blockSize;
+    /* Initialize blkCnt with number of samples */
+    blkCnt = blockSize;
 
-  while (blkCnt > 0U)
-  {
-    /* C = A + B */
-    /* Add and then store the results in the destination buffer. */
-    *pDst++ = (int16_t) __SSAT16(((int32_t) * pSrcA++ + *pSrcB++), 16);
+    while (blkCnt > 0U)
+    {
+        /* C = A + B */
+        /* Add and then store the results in the destination buffer. */
+        *pDst++ = (int16_t) __SSAT16(((int32_t ) *pSrcA++ + *pSrcB++), 16);
 
-    /* Decrement the loop counter */
-    blkCnt--;
-  }
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
 #endif /* #if defined (USE_MATH_DSP) */
 
@@ -203,64 +223,72 @@ void arm_add_s16(int16_t *pSrcA, int16_t *pSrcB, int16_t *pDst, uint32_t blockSi
  * The function uses saturating arithmetic.
  * Results outside of the allowable S16 range will be saturated.
  */
-void arm_sub_s16(int16_t *pSrcA, int16_t *pSrcB, int16_t *pDst, uint32_t blockSize) {
-	uint32_t blkCnt; /* loop counter */
+void simd_sub_s16(int16_t *pSrcA,
+    int16_t *pSrcB,
+    int16_t *pDst,
+    uint32_t blockSize)
+{
+    uint32_t blkCnt; /* loop counter */
 
 #if defined (USE_MATH_DSP)
 
-	/* Run the below code for Cortex-M4 and Cortex-M3 */
-	int32_t inA1, inA2;
-	int32_t inB1, inB2;
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
+    int32_t inA1;
+    int32_t inA2;
+    int32_t inB1;
+    int32_t inB2;
 
-	/*loop Unrolling */
-	blkCnt = blockSize >> 2U;
+    /*loop Unrolling */
+    blkCnt = blockSize >> 2U;
 
-	/* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
-	 ** a second loop below computes the remaining 1 to 3 samples. */
-	while (blkCnt > 0U) {
-		/* C = A - B */
-		/* Subtract and then store the results in the destination buffer two samples at a time. */
-		inA1 = *__SIMD32(pSrcA)++;
-		inA2 = *__SIMD32(pSrcA)++;
-		inB1 = *__SIMD32(pSrcB)++;
-		inB2 = *__SIMD32(pSrcB)++;
+    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+     ** a second loop below computes the remaining 1 to 3 samples. */
+    while (blkCnt > 0U)
+    {
+        /* C = A - B */
+        /* Subtract and then store the results in the destination buffer two samples at a time. */
+        inA1 = *__SIMD32(pSrcA)++;
+        inA2 = *__SIMD32(pSrcA)++;
+        inB1 = *__SIMD32(pSrcB)++;
+        inB2 = *__SIMD32(pSrcB)++;
 
-		*__SIMD32(pDst)++ = __QSUB16(inA1, inB1);
-		*__SIMD32(pDst)++ = __QSUB16(inA2, inB2);
+        *__SIMD32(pDst)++ = __QSUB16(inA1, inB1);
+        *__SIMD32(pDst)++ = __QSUB16(inA2, inB2);
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
-	/* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-	 ** No loop unrolling is used. */
-	blkCnt = blockSize % 0x4U;
+    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+     ** No loop unrolling is used. */
+    blkCnt = blockSize % 0x4U;
 
-	while (blkCnt > 0U) {
-		/* C = A - B */
-		/* Subtract and then store the result in the destination buffer. */
-		*pDst++ = (int16_t) __QSUB16(*pSrcA++, *pSrcB++);
+    while (blkCnt > 0U)
+    {
+        /* C = A - B */
+        /* Subtract and then store the result in the destination buffer. */
+        *pDst++ = (int16_t) __QSUB16(*pSrcA++, *pSrcB++);
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
 #else
 
-  /* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = blockSize;
+    /* Initialize blkCnt with number of samples */
+    blkCnt = blockSize;
 
-  while (blkCnt > 0U)
-  {
-    /* C = A - B */
-    /* Subtract and then store the result in the destination buffer. */
-    *pDst++ = (int16_t) __SSAT16(((int32_t ) *pSrcA++ - *pSrcB++), 16);
+    while (blkCnt > 0U)
+    {
+        /* C = A - B */
+        /* Subtract and then store the result in the destination buffer. */
+        *pDst++ = (int16_t) __SSAT16(((int32_t ) *pSrcA++ - *pSrcB++), 16);
 
-    /* Decrement the loop counter */
-    blkCnt--;
-  }
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
 #endif /* #if defined (USE_MATH_DSP) */
 
@@ -278,55 +306,61 @@ void arm_sub_s16(int16_t *pSrcA, int16_t *pSrcB, int16_t *pDst, uint32_t blockSi
  * \par
  * The function is implemented using a 32-bit internal accumulator.
  */
-void arm_mean_s16(int16_t *pSrc, uint32_t blockSize, int16_t *pResult) {
-	int32_t sum = 0; /* Temporary result storage */
-	uint32_t blkCnt; /* loop counter */
+void simd_mean_s16(int16_t *pSrc,
+    uint32_t blockSize,
+    int16_t *pResult)
+{
+    int32_t sum = 0; /* Temporary result storage */
+    uint32_t blkCnt; /* loop counter */
 
 #if defined (USE_MATH_DSP)
-	/* Run the below code for Cortex-M4 and Cortex-M3 */
-	int32_t in;
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-	/*loop Unrolling */
-	blkCnt = blockSize >> 2U;
+    int32_t in;
 
-	/* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
-	 ** a second loop below computes the remaining 1 to 3 samples. */
-	while (blkCnt > 0U) {
-		/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
-		in = *__SIMD32(pSrc)++;
-		sum += ((in << 16U) >> 16U);
-		sum += (in >> 16U);
-		in = *__SIMD32(pSrc)++;
-		sum += ((in << 16U) >> 16U);
-		sum += (in >> 16U);
+    /*loop Unrolling */
+    blkCnt = blockSize >> 2U;
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+     ** a second loop below computes the remaining 1 to 3 samples. */
+    while (blkCnt > 0U)
+    {
+        /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
+        in = *__SIMD32(pSrc)++;
+        sum += ((in << 16U) >> 16U);
+        sum += (in >> 16U);
+        in = *__SIMD32(pSrc)++;
+        sum += ((in << 16U) >> 16U);
+        sum += (in >> 16U);
 
-	/* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-	 ** No loop unrolling is used. */
-	blkCnt = blockSize % 0x4U;
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
+
+    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+     ** No loop unrolling is used. */
+    blkCnt = blockSize % 0x4U;
 
 #else
-	/* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-	/* Loop over blockSize number of values */
-	blkCnt = blockSize;
+    /* Loop over blockSize number of values */
+    blkCnt = blockSize;
 
 #endif /* #if defined (USE_MATH_DSP) */
 
-	while (blkCnt > 0U) {
-		/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
-		sum += *pSrc++;
+    while (blkCnt > 0U)
+    {
+        /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
+        sum += *pSrc++;
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
-	/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) / blockSize  */
-	/* Store the result to the destination */
-	*pResult = (int16_t) (sum / (int32_t) blockSize);
+    /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) / blockSize  */
+    /* Store the result to the destination */
+    *pResult = (int16_t) (sum / (int32_t) blockSize);
 }
 
 /**
@@ -342,127 +376,145 @@ void arm_mean_s16(int16_t *pSrc, uint32_t blockSize, int16_t *pResult) {
  * The function uses saturating arithmetic.
  * Results outside of the allowable S16 range will be saturated.
  */
-void arm_shift_s16(int16_t *pSrc, int8_t shiftBits, int16_t *pDst, uint32_t blockSize) {
-	uint32_t blkCnt; /* loop counter */
-	uint8_t sign; /* Sign of shiftBits */
+void simd_shift_s16(int16_t *pSrc,
+    int8_t shiftBits,
+    int16_t *pDst,
+    uint32_t blockSize)
+{
+    uint32_t blkCnt; /* loop counter */
+    uint8_t sign; /* Sign of shiftBits */
 
 #if defined (USE_MATH_DSP)
 
-	/* Run the below code for Cortex-M4 and Cortex-M3 */
-	int16_t in1, in2; /* Temporary variables */
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-	/*loop Unrolling */
-	blkCnt = blockSize >> 2U;
+    int16_t in1;
+    int32_t in2; /* Temporary variables */
 
-	/* Getting the sign of shiftBits */
-	sign = (shiftBits & 0x80);
+    /*loop Unrolling */
+    blkCnt = blockSize >> 2U;
 
-	/* If the shift value is positive then do right shift else left shift */
-	if (sign == 0U) {
-		/* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
-		 ** a second loop below computes the remaining 1 to 3 samples. */
-		while (blkCnt > 0U) {
-			/* Read 2 inputs */
-			in1 = *pSrc++;
-			in2 = *pSrc++;
-			/* C = A << shiftBits */
-			/* Shift the inputs and then store the results in the destination buffer. */
-			*__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in1 << shiftBits), 16), __SSAT16((in2 << shiftBits), 16));
+    /* Getting the sign of shiftBits */
+    sign = (shiftBits & 0x80);
 
-			in1 = *pSrc++;
-			in2 = *pSrc++;
+    /* If the shift value is positive then do right shift else left shift */
+    if (sign == 0U)
+        {
+        /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+         ** a second loop below computes the remaining 1 to 3 samples. */
+        while (blkCnt > 0U)
+        {
+            /* Read 2 inputs */
+            in1 = *pSrc++;
+            in2 = *pSrc++;
+            /* C = A << shiftBits */
+            /* Shift the inputs and then store the results in the destination buffer. */
 
-			*__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in1 << shiftBits), 16), __SSAT16((in2 << shiftBits), 16));
+            *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in1 << shiftBits), 16),
+                __SSAT16((in2 << shiftBits), 16));
 
-			/* Decrement the loop counter */
-			blkCnt--;
-		}
+            in1 = *pSrc++;
+            in2 = *pSrc++;
 
-		/* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-		 ** No loop unrolling is used. */
-		blkCnt = blockSize % 0x4U;
+            *__SIMD32(pDst)++ = __PKHBT16(__SSAT16((in1 << shiftBits), 16),
+                __SSAT16((in2 << shiftBits), 16));
 
-		while (blkCnt > 0U) {
-			/* C = A << shiftBits */
-			/* Shift and then store the results in the destination buffer. */
-			*pDst++ = __SSAT16((*pSrc++ << shiftBits), 16);
+            /* Decrement the loop counter */
+            blkCnt--;
+        }
 
-			/* Decrement the loop counter */
-			blkCnt--;
-		}
-	} else {
-		/* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
-		 ** a second loop below computes the remaining 1 to 3 samples. */
-		while (blkCnt > 0U) {
-			/* Read 2 inputs */
-			in1 = *pSrc++;
-			in2 = *pSrc++;
+        /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+         ** No loop unrolling is used. */
+        blkCnt = blockSize % 0x4U;
 
-			/* C = A >> shiftBits */
-			/* Shift the inputs and then store the results in the destination buffer. */
-			*__SIMD32(pDst)++ = __PKHBT16((in1 >> -shiftBits), (in2 >> -shiftBits));
+        while (blkCnt > 0U)
+        {
+            /* C = A << shiftBits */
+            /* Shift and then store the results in the destination buffer. */
+            *pDst++ = __SSAT16((*pSrc++ << shiftBits), 16);
 
-			in1 = *pSrc++;
-			in2 = *pSrc++;
+            /* Decrement the loop counter */
+            blkCnt--;
+        }
+    }
+    else
+    {
+        /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+         ** a second loop below computes the remaining 1 to 3 samples. */
+        while (blkCnt > 0U)
+        {
+            /* Read 2 inputs */
+            in1 = *pSrc++;
+            in2 = *pSrc++;
 
-			*__SIMD32(pDst)++ = __PKHBT16((in1 >> -shiftBits), (in2 >> -shiftBits));
+            /* C = A >> shiftBits */
+            /* Shift the inputs and then store the results in the destination buffer. */
 
-			/* Decrement the loop counter */
-			blkCnt--;
-		}
+            *__SIMD32(pDst)++ = __PKHBT16((in1 >> -shiftBits),
+                (in2 >> -shiftBits));
 
-		/* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-		 ** No loop unrolling is used. */
-		blkCnt = blockSize % 0x4U;
+            in1 = *pSrc++;
+            in2 = *pSrc++;
 
-		while (blkCnt > 0U) {
-			/* C = A >> shiftBits */
-			/* Shift the inputs and then store the results in the destination buffer. */
-			*pDst++ = (*pSrc++ >> -shiftBits);
+            *__SIMD32(pDst)++ = __PKHBT16((in1 >> -shiftBits),
+                (in2 >> -shiftBits));
 
-			/* Decrement the loop counter */
-			blkCnt--;
-		}
-	}
+            /* Decrement the loop counter */
+            blkCnt--;
+        }
+
+        /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+         ** No loop unrolling is used. */
+        blkCnt = blockSize % 0x4U;
+
+        while (blkCnt > 0U)
+        {
+            /* C = A >> shiftBits */
+            /* Shift the inputs and then store the results in the destination buffer. */
+            *pDst++ = (*pSrc++ >> -shiftBits);
+
+            /* Decrement the loop counter */
+            blkCnt--;
+        }
+    }
 
 #else
 
-  /* Run the below code for Cortex-M0 */
+    /* Run the below code for Cortex-M0 */
 
-  /* Getting the sign of shiftBits */
-  sign = (shiftBits & 0x80);
+    /* Getting the sign of shiftBits */
+    sign = (shiftBits & 0x80);
 
-  /* If the shift value is positive then do right shift else left shift */
-  if (sign == 0U)
-  {
-    /* Initialize blkCnt with number of samples */
-    blkCnt = blockSize;
+    /* If the shift value is positive then do right shift else left shift */
+    if (sign == 0U) {
+        /* Initialize blkCnt with number of samples */
+        blkCnt = blockSize;
 
-    while (blkCnt > 0U)
-    {
-      /* C = A << shiftBits */
-      /* Shift and then store the results in the destination buffer. */
-      *pDst++ = __SSAT16(((int32_t) * pSrc++ << shiftBits), 16);
+        while (blkCnt > 0U)
+        {
+            /* C = A << shiftBits */
+            /* Shift and then store the results in the destination buffer. */
+            *pDst++ = __SSAT16(((int32_t ) *pSrc++ << shiftBits), 16);
 
-      /* Decrement the loop counter */
-      blkCnt--;
+            /* Decrement the loop counter */
+            blkCnt--;
+        }
     }
-  }
-  else
-  {
-    /* Initialize blkCnt with number of samples */
-    blkCnt = blockSize;
-
-    while (blkCnt > 0U)
+    else
     {
-      /* C = A >> shiftBits */
-      /* Shift the inputs and then store the results in the destination buffer. */
-      *pDst++ = (*pSrc++ >> -shiftBits);
+        /* Initialize blkCnt with number of samples */
+        blkCnt = blockSize;
 
-      /* Decrement the loop counter */
-      blkCnt--;
+        while (blkCnt > 0U)
+        {
+            /* C = A >> shiftBits */
+            /* Shift the inputs and then store the results in the destination buffer. */
+            *pDst++ = (*pSrc++ >> -shiftBits);
+
+            /* Decrement the loop counter */
+            blkCnt--;
+        }
     }
-  }
 
 #endif /* #if defined (USE_MATH_DSP) */
 
@@ -480,77 +532,88 @@ void arm_shift_s16(int16_t *pSrc, int8_t shiftBits, int16_t *pDst, uint32_t bloc
  * The function uses saturating arithmetic.
  */
 
-void arm_abs_s16(int16_t *pSrc, int16_t *pDst, uint32_t blockSize) {
-	uint32_t blkCnt; /* loop counter */
+void simd_abs_s16(int16_t *pSrc,
+    int16_t *pDst,
+    uint32_t blockSize)
+{
+    uint32_t blkCnt; /* loop counter */
 
 #if defined (USE_MATH_DSP)
-	__SIMD32_TYPE *simd;
+    __SIMD32_TYPE *simd;
 
-	/* Run the below code for Cortex-M4 and Cortex-M3 */
-	int16_t in1; /* Input value1 */
-	int16_t in2; /* Input value2 */
+    /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-	/*loop Unrolling */
-	blkCnt = blockSize >> 2U;
+    int16_t in1; /* Input value1 */
+    int16_t in2; /* Input value2 */
 
-	/* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
-	 ** a second loop below computes the remaining 1 to 3 samples. */
-	simd = __SIMD32_CONST(pDst);
-	while (blkCnt > 0U) {
-		/* C = |A| */
-		/* Read two inputs */
-		in1 = *pSrc++;
-		in2 = *pSrc++;
+    /*loop Unrolling */
+    blkCnt = blockSize >> 2U;
 
-		/* Store the Absolute result in the destination buffer by packing the two values, in a single cycle */
-		*simd++ = __PKHBT16(((in1 > 0) ? in1 : (int16_t )__QSUB16(0, in1)), ((in2 > 0) ? in2 : (int16_t )__QSUB16(0, in2)));
+    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+     ** a second loop below computes the remaining 1 to 3 samples. */
+    simd = __SIMD32_CONST(pDst);
+    while (blkCnt > 0U)
+    {
+        /* C = |A| */
+        /* Read two inputs */
+        in1 = *pSrc++;
+        in2 = *pSrc++;
 
-		in1 = *pSrc++;
-		in2 = *pSrc++;
+        /* Store the Absolute result in the destination buffer by packing the two values, in a single cycle */
+        *simd++ =
+            __PKHBT16(((in1 > 0) ? in1 : (int16_t )__QSUB16(0, in1)),
+                ((in2 > 0) ? in2 : (int16_t )__QSUB16(0, in2)));
 
-		*simd++ = __PKHBT16(((in1 > 0) ? in1 : (int16_t )__QSUB16(0, in1)), ((in2 > 0) ? in2 : (int16_t )__QSUB16(0, in2)));
+        in1 = *pSrc++;
+        in2 = *pSrc++;
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
-	pDst = (int16_t*) simd;
+        *simd++ =
+            __PKHBT16(((in1 > 0) ? in1 : (int16_t )__QSUB16(0, in1)),
+                ((in2 > 0) ? in2 : (int16_t )__QSUB16(0, in2)));
 
-	/* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-	 ** No loop unrolling is used. */
-	blkCnt = blockSize % 0x4U;
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
+    pDst = (int16_t*) simd;
 
-	while (blkCnt > 0U) {
-		/* C = |A| */
-		/* Read the input */
-		in1 = *pSrc++;
+    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+     ** No loop unrolling is used. */
+    blkCnt = blockSize % 0x4U;
 
-		/* Calculate absolute value of input and then store the result in the destination buffer. */
-		*pDst++ = (in1 > 0) ? in1 : (int16_t) __QSUB16(0, in1);
+    while (blkCnt > 0U)
+    {
+        /* C = |A| */
+        /* Read the input */
+        in1 = *pSrc++;
 
-		/* Decrement the loop counter */
-		blkCnt--;
-	}
+        /* Calculate absolute value of input and then store the result in the destination buffer. */
+        *pDst++ = (in1 > 0) ? in1 : (int16_t) __QSUB16(0, in1);
+
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
 #else
 
-  /* Run the below code for Cortex-M0 */
-  int16_t in;                                      /* Temporary input variable */
+    /* Run the below code for Cortex-M0 */
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = blockSize;
+    int16_t in; /* Temporary input variable */
 
-  while (blkCnt > 0U)
-  {
-    /* C = |A| */
-    /* Read the input */
-    in = *pSrc++;
+    /* Initialize blkCnt with number of samples */
+    blkCnt = blockSize;
 
-    /* Calculate absolute value of input and then store the result in the destination buffer. */
-    *pDst++ = (in > 0) ? in : ((in == (int16_t) 0x8000) ? 0x7fff : -in);
+    while (blkCnt > 0U)
+    {
+        /* C = |A| */
+        /* Read the input */
+        in = *pSrc++;
 
-    /* Decrement the loop counter */
-    blkCnt--;
-  }
+        /* Calculate absolute value of input and then store the result in the destination buffer. */
+        *pDst++ = (in > 0) ? in : ((in == (int16_t) 0x8000) ? 0x7fff : -in);
+
+        /* Decrement the loop counter */
+        blkCnt--;
+    }
 
 #endif /* #if defined (USE_MATH_DSP) */
 

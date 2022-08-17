@@ -5,8 +5,8 @@
  *      Author: pudja
  */
 
-#ifndef ARM_MATH_S16_MATH_H_
-#define ARM_MATH_S16_MATH_H_
+#ifndef MATH_S16_MATH_H_
+#define MATH_S16_MATH_H_
 
 #include <stdint.h>
 
@@ -103,4 +103,4 @@
 #define __PKHBT16(ARG1,ARG2)       __PKHBT((ARG1), (ARG2), 16)
 #endif /* __PKHBT16 */
 
-#endif /* ARM_MATH_S16_MATH_H_ */
+#endif /* MATH_S16_MATH_H_ */
